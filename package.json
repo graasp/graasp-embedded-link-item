@@ -1,0 +1,37 @@
+{
+  "name": "graasp-embedded-link-item",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/graasp/graasp-embedded-link-item.git"
+  },
+  "keywords": [],
+  "author": "Graasp Association",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/graasp/graasp-embedded-link-item/issues"
+  },
+  "homepage": "https://github.com/graasp/graasp-embedded-link-item#readme",
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "@types/eslint": "^7.2.5",
+    "@types/graasp": "git://github.com/graasp/graasp-types.git#master",
+    "@types/node": "^14.14.7",
+    "@types/node-fetch": "^2.5.8",
+    "@typescript-eslint/eslint-plugin": "^4.7.0",
+    "@typescript-eslint/parser": "^4.7.0",
+    "eslint": "^7.13.0",
+    "fastify": "^3.8.0",
+    "typescript": "^4.0.5"
+  }
+}
