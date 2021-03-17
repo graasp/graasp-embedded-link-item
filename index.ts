@@ -2,6 +2,13 @@ import { FastifyPluginAsync } from 'fastify';
 import { Item, UnknownExtra } from 'graasp';
 import fetch from 'node-fetch';
 
+/**
+ * TODO:
+ * 1. how to apply a schema rule when creating a embedded link item??
+ *  "extra": { "embeddedLinkItem": { "url" <<<<----- } }
+ *  To constrain what url is?
+ */
+
 interface GraaspEmbeddedLinkItemOptions {
   /** \<protocol\>://\<hostname\>:\<port\> */
   iframelyHrefOrigin: string,
@@ -39,7 +46,7 @@ const plugin: FastifyPluginAsync<GraaspEmbeddedLinkItemOptions> = async (fastify
       // better clues on how to extract the metadata here: https://iframely.com/docs/links
       const { meta: { title, description }, html, links = [] } = await response.json();
 
-      // TODO: maybe all the code below should be moved to another place if it gets more co
+      // TODO: maybe all the code below should be moved to another place if it gets more complex
       if (title) item.name = title;
       if (description) item.description = description;
       if (html) embeddedLinkItem.html = html;
