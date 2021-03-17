@@ -13,7 +13,8 @@ interface EmbeddedLinkItemExtra extends UnknownExtra {
     descritpion: string,
     url: string,
     html: string,
-    thumbnails: string[]
+    thumbnails: string[],
+    icons: string[]
   }
 }
 
@@ -36,24 +37,25 @@ const plugin: FastifyPluginAsync<GraaspEmbeddedLinkItemOptions> = async (fastify
 
       const response = await fetch(`${iframelyHrefOrigin}/iframely?uri=${encodeURIComponent(url)}`);
       // better clues on how to extract the metadata here: https://iframely.com/docs/links
-      const { meta: { title, description }, html, links } = await response.json();
+      const { meta: { title, description }, html, links = [] } = await response.json();
 
       // TODO: maybe all the code below should be moved to another place if it gets more co
       if (title) item.name = title;
       if (description) item.description = description;
       if (html) embeddedLinkItem.html = html;
 
-      if (links.length) {
-        embeddedLinkItem.thumbnails = links
-          .reduce((acc: string[], { rel, href }: { rel: string[], href: string }) => {
-            if (hasThumbnailRel(rel)) acc.push(href);
-            return acc;
-          }, []);
-      }
+      embeddedLinkItem.thumbnails = links
+        .filter(({ rel }: { rel: string[] }) => hasThumbnailRel(rel))
+        .map(({ href }: { href: string }) => href);
+
+      embeddedLinkItem.icons = links
+        .filter(({ rel }: { rel: string[] }) => hasIconRel(rel))
+        .map(({ href }: { href: string }) => href);
     });
 };
 
 const hasRel = (rel: string[], value: string) => rel.some(r => r === value);
 const hasThumbnailRel = (rel: string[]) => hasRel(rel, 'thumbnail');
+const hasIconRel = (rel: string[]) => hasRel(rel, 'icon');
 
 export default plugin;
