@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/graasp/graasp-embedded-link-item#readme",
   "dependencies": {
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "fluent-json-schema": "2.0.4"
   },
   "devDependencies": {
     "@types/eslint": "^7.2.5",
