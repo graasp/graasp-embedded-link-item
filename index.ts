@@ -44,7 +44,8 @@ const plugin: FastifyPluginAsync<GraaspEmbeddedLinkItemOptions> = async (fastify
 
       const response = await fetch(`${iframelyHrefOrigin}/iframely?uri=${encodeURIComponent(url)}`);
       // better clues on how to extract the metadata here: https://iframely.com/docs/links
-      const { meta: { title, description }, html, links = [] } = await response.json();
+      const { meta = {}, html, links = [] } = await response.json();
+      const { title, description } = meta;
 
       // TODO: maybe all the code below should be moved to another place if it gets more complex
       if (title) item.name = title;
