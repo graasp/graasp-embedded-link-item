@@ -4,10 +4,7 @@ const embeddedLinkItemExtraCreate = S.object()
   .additionalProperties(false)
   .prop(
     'embeddedLink',
-    S.object()
-      .additionalProperties(false)
-      .prop('url', S.string().format('url'))
-      .required(['url'])
+    S.object().additionalProperties(false).prop('url', S.string().format('url')).required(['url']),
   )
   .required(['embeddedLink']);
 
