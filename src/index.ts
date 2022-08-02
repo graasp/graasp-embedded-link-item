@@ -1,6 +1,9 @@
-import { FastifyPluginAsync } from 'fastify';
 import fetch from 'node-fetch';
-import { Item, UnknownExtra } from 'graasp';
+
+import { FastifyPluginAsync } from 'fastify';
+
+import { Item, ItemType, UnknownExtra } from '@graasp/sdk';
+
 import { createSchema } from './schemas';
 
 interface GraaspEmbeddedLinkItemOptions {
@@ -33,8 +36,6 @@ type IframelyResponse = {
   links: IframelyLink[];
 };
 
-const ITEM_TYPE = 'embeddedLink';
-
 const plugin: FastifyPluginAsync<GraaspEmbeddedLinkItemOptions> = async (fastify, options) => {
   const { iframelyHrefOrigin } = options;
   const {
@@ -55,7 +56,7 @@ const plugin: FastifyPluginAsync<GraaspEmbeddedLinkItemOptions> = async (fastify
       const { type: itemType, extra } = item;
       const { embeddedLink } = extra ?? {};
 
-      if (itemType !== ITEM_TYPE || !embeddedLink) return;
+      if (itemType !== ItemType.LINK || !embeddedLink) return;
 
       const { url } = embeddedLink;
 
@@ -65,9 +66,15 @@ const plugin: FastifyPluginAsync<GraaspEmbeddedLinkItemOptions> = async (fastify
       const { title, description } = meta;
 
       // TODO: maybe all the code below should be moved to another place if it gets more complex
-      if (title) item.name = title;
-      if (description) item.description = description;
-      if (html) embeddedLink.html = html;
+      if (title) {
+        item.name = title.trim();
+      }
+      if (description) {
+        item.description = description.trim();
+      }
+      if (html) {
+        embeddedLink.html = html;
+      }
 
       embeddedLink.thumbnails = links
         .filter(({ rel }) => hasThumbnailRel(rel))
